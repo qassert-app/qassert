@@ -1,42 +1,39 @@
 import React from 'react';
 
-export const LessonContent: React.FC<{ lesson: any }> = ({ lesson }) => {
+interface LessonContentProps {
+  lesson: any;
+}
+
+export const LessonContent: React.FC<LessonContentProps> = ({ lesson }) => {
+  if (!lesson) return <div>Loading...</div>;
+
+  // Handle nested content structure
+  const content = lesson.content?.content || lesson.content || {};
+  const introduction = content.introduction || '';
+  const keyTakeaways = content.keyTakeaways || [];
+
   return (
     <div className="lesson-content">
-      <h1>{lesson.title}</h1>
-      <div className="metadata">
-        <span className="difficulty">{lesson.difficulty}</span>
-        <span className="time">{lesson.estimatedTime} min</span>
-        <span className="language">{lesson.language}</span>
-      </div>
+      <h2>{lesson.title}</h2>
+      <p className="difficulty">Difficulty: {lesson.difficulty}</p>
+      
+      {introduction && (
+        <div className="introduction">
+          <h3>Introduction</h3>
+          <p>{introduction}</p>
+        </div>
+      )}
 
-      <section>
-        <h2>Why This Matters</h2>
-        <p>{lesson.content.whyItMatters}</p>
-      </section>
-
-      <section>
-        <h2>Real-World Scenario</h2>
-        <p>{lesson.content.realWorldScenario}</p>
-      </section>
-
-      <section>
-        <h2>Key Concepts</h2>
-        <ul>
-          {lesson.content.keyTakeaways.map((point: string, i: number) => (
-            <li key={i}>{point}</li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2>CTFL Learning Objectives</h2>
-        <ul>
-          {lesson.ctflObjectives.map((obj: string, i: number) => (
-            <li key={i}>{obj}</li>
-          ))}
-        </ul>
-      </section>
+      {keyTakeaways.length > 0 && (
+        <div className="key-takeaways">
+          <h3>Key Takeaways</h3>
+          <ul>
+            {keyTakeaways.map((takeaway: string, idx: number) => (
+              <li key={idx}>{takeaway}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
