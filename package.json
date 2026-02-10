@@ -1,0 +1,21 @@
+{
+"name": "qa-learning-platform",
+  "version": "0.1.0",
+  "description": "Interactive QA automation learning platform",
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "install-all": "npm install && npm install --workspace=frontend && npm install --workspace=backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qassert-app/qassert.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/qassert-app/qassert/issues"
+  },
+  "homepage": "https://github.com/qassert-app/qassert#readme"
+}
