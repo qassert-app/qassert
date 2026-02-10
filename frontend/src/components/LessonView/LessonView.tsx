@@ -30,27 +30,29 @@ export const LessonView: React.FC<LessonViewProps> = ({ lessonId }) => {
     }, [lessonId]);
 
     const handleRunCode = async () => {
-        setIsRunning(true);
-        try {
-          const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/execute`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                language: lesson.language,
-                code
-              })
-            }
-          );
-          const result = await response.json();
-          setOutput(result.stdout || result.stderr || JSON.stringify(result));
-        } catch (error) {
-          setOutput(`Error: ${error}`);
-        } finally {
-          setIsRunning(false);
-        }
-      };
+      setIsRunning(true);
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/execute`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              language: lesson.language,
+              code
+            })
+          }
+        );
+        const result = await response.json();
+        // Piston API returns result.run.stdout/stderr
+        const output = result.run?.stdout || result.run?.stderr || JSON.stringify(result);
+        setOutput(output);
+      } catch (error) {
+        setOutput(`Error: ${error}`);
+      } finally {
+        setIsRunning(false);
+      }
+    };
   
     if (!lesson) return <div>Loading...</div>;
   
