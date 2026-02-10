@@ -20,9 +20,13 @@ app.get('/health', (req, res) => {
 });
 
 // Routes (we'll add these next)
-app.use('/api/lessons', require('./routes/lessons'));
-app.use('/api/execute', require('./routes/execute'));
-app.use('/api/progress', require('./routes/progress'));
+import lessonsRouter from './routes/lessons';
+import executeRouter from './routes/execute';
+import progressRouter from './routes/progress';
+
+app.use('/api/lessons', lessonsRouter);
+app.use('/api/execute', executeRouter);
+app.use('/api/progress', progressRouter);
 
 // Error handling
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

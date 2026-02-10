@@ -1,0 +1,98 @@
+{
+    "id": "py-automation-intro",
+    "title": "Introduction to Test Automation with Python",
+    "language": "python",
+    "difficulty": "beginner",
+    "orderIndex": 1,
+    "estimatedTime": 45,
+    "ctflObjectives": [
+      "Understand the benefits and limitations of test automation",
+      "Identify suitable scenarios for automation",
+      "Understand the automation sweet spot (cost vs benefit)"
+    ],
+    "content": {
+      "introduction": "Test automation is one of the most valuable skills in QA. But it's not a silver bullet. In this lesson, you'll learn when to automate, how to think like an automation engineer, and write your first test with Python and Pytest.",
+      "whyItMatters": "Manual testing doesn't scale. With test automation, you can run thousands of tests in minutes. This saves time, catches regressions early, and lets you focus on exploratory testing where human judgment matters most.",
+      "realWorldScenario": "You're on a team shipping a web app every week. Manual testing takes 3 days and often misses edge cases. With automation, you can test in 30 minutes and catch issues earlier. This lesson shows you how.",
+      "keyTakeaways": [
+        "Test automation increases test coverage and execution speed",
+        "Not all tests should be automated (UI is slow and brittle)",
+        "The test pyramid guides what to automate",
+        "Python + Pytest is simple, readable, and powerful",
+        "Good tests are fast, reliable, and maintainable"
+      ]
+    },
+    "exercises": [
+      {
+        "id": "py-intro-ex1",
+        "type": "guided",
+        "title": "Your First Test: Addition Function",
+        "description": "Write a simple test using Pytest that validates a calculator's add function. We've provided the starter code with the function already written. Your job is to complete the test assertions.",
+        "starterCode": "# This is a simple function we want to test\ndef add(a, b):\n    return a + b\n\n# Write your test here\ndef test_add_positive_numbers():\n    result = add(2, 3)\n    # TODO: Assert that result equals 5\n    assert result == 5  # Uncomment when ready\n\ndef test_add_negative_numbers():\n    result = add(-2, -3)\n    # TODO: Assert that result equals -5\n    assert result == -5  # Uncomment when ready\n\nif __name__ == '__main__':\n    test_add_positive_numbers()\n    test_add_negative_numbers()\n    print('All tests passed!')",
+        "solution": "def add(a, b):\n    return a + b\n\ndef test_add_positive_numbers():\n    result = add(2, 3)\n    assert result == 5\n\ndef test_add_negative_numbers():\n    result = add(-2, -3)\n    assert result == -5\n\nif __name__ == '__main__':\n    test_add_positive_numbers()\n    test_add_negative_numbers()\n    print('All tests passed!')",
+        "hints": [
+          "Use 'assert' to check if the result equals the expected value",
+          "The syntax is: assert actual_value == expected_value"
+        ],
+        "testCases": [
+          {
+            "name": "Test adds positive numbers",
+            "assertion": "add(2, 3) == 5"
+          },
+          {
+            "name": "Test adds negative numbers",
+            "assertion": "add(-2, -3) == -5"
+          }
+        ]
+      },
+      {
+        "id": "py-intro-ex2",
+        "type": "challenge",
+        "title": "Write Tests for a Validator",
+        "description": "You're given a function that validates email addresses. Write at least 3 tests: one for a valid email, one for an invalid email (no @), and one for another edge case you think of.",
+        "starterCode": "def is_valid_email(email):\n    \"\"\"Simple email validation: must contain @ and a domain\"\"\"\n    return '@' in email and '.' in email.split('@')[1]\n\n# Write your tests here\ndef test_valid_email():\n    # TODO: Test a valid email\n    pass\n\ndef test_invalid_email_no_at():\n    # TODO: Test email without @\n    pass\n\ndef test_invalid_email_no_domain():\n    # TODO: Test email without domain extension\n    pass\n\nif __name__ == '__main__':\n    test_valid_email()\n    test_invalid_email_no_at()\n    test_invalid_email_no_domain()\n    print('All tests passed!')",
+        "solution": "def is_valid_email(email):\n    return '@' in email and '.' in email.split('@')[1]\n\ndef test_valid_email():\n    assert is_valid_email('user@example.com') == True\n\ndef test_invalid_email_no_at():\n    assert is_valid_email('userexample.com') == False\n\ndef test_invalid_email_no_domain():\n    assert is_valid_email('user@example') == False\n\nif __name__ == '__main__':\n    test_valid_email()\n    test_invalid_email_no_at()\n    test_invalid_email_no_domain()\n    print('All tests passed!')",
+        "hints": [
+          "Use assert to check if the function returns True for valid emails",
+          "Use assert to check if the function returns False for invalid emails",
+          "Think about edge cases: what makes an email invalid?"
+        ],
+        "testCases": [
+          {
+            "name": "Valid email accepted",
+            "assertion": "is_valid_email('user@example.com')"
+          },
+          {
+            "name": "Email without @ rejected",
+            "assertion": "not is_valid_email('userexample.com')"
+          }
+        ]
+      }
+    ],
+    "ctflQuiz": [
+      {
+        "id": "quiz1",
+        "question": "Which of the following is NOT a benefit of test automation?",
+        "options": [
+          "Tests run faster than manual testing",
+          "Test automation replaces the need for exploratory testing",
+          "Automated tests catch regressions quickly",
+          "Tests can run on schedule (CI/CD)"
+        ],
+        "correct": 1,
+        "explanation": "Test automation cannot replace exploratory testing. Humans are still needed to think creatively about edge cases and user experience. Automation is best for repetitive, well-defined tests."
+      },
+      {
+        "id": "quiz2",
+        "question": "What is the test pyramid?",
+        "options": [
+          "Many UI tests, fewer API tests, few unit tests",
+          "Many unit tests, fewer API tests, few UI tests",
+          "All tests should be the same level",
+          "UI tests are the most important"
+        ],
+        "correct": 1,
+        "explanation": "The test pyramid shows that most tests should be unit tests (fast, reliable), some API/integration tests, and fewer UI tests (slower, more brittle). This optimizes for speed and stability."
+      }
+    ]
+  }
