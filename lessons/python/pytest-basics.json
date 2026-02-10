@@ -1,0 +1,100 @@
+{
+    "id": "py-pytest-basics",
+    "title": "Pytest Fundamentals: Writing Your First Test Suite",
+    "language": "python",
+    "difficulty": "beginner",
+    "orderIndex": 2,
+    "estimatedTime": 60,
+    "ctflObjectives": [
+      "Understand test organization and discovery in pytest",
+      "Write effective assertions and understand failure messages",
+      "Understand test naming conventions and best practices",
+      "Use pytest fixtures for setup and teardown"
+    ],
+    "content": {
+      "introduction": "Pytest is Python's most popular testing framework. It's simple, flexible, and powerful. In this lesson, you'll learn how pytest discovers tests, how to write assertions that fail meaningfully, and how to organize tests for maintainability.",
+      "whyItMatters": "Good test organization means tests are easy to find, easy to understand, and easy to maintain. As your test suite grows, organization becomes critical. Pytest conventions help scale from 10 tests to 10,000.",
+      "realWorldScenario": "Your team has written 50 test files with 2,000+ tests. Some tests fail, but it's hard to understand why because the assertions aren't clear. You decide to refactor using pytest best practices: clear test names, descriptive assertions, and organized fixtures. Suddenly, debugging failures takes minutes instead of hours.",
+      "keyTakeaways": [
+        "Pytest discovers tests automatically: files named test_*.py and functions named test_*",
+        "Assertions use plain Python: assert actual == expected (no special assertion syntax)",
+        "Test names should be descriptive: test_login_with_invalid_password_shows_error",
+        "Fixtures provide reusable setup and teardown logic",
+        "Use pytest.mark to organize and filter tests"
+      ]
+    },
+    "exercises": [
+      {
+        "id": "py-pytest-ex1",
+        "type": "guided",
+        "title": "Basic Assertions and Test Organization",
+        "description": "You're given a function that calculates user discounts. Write a test file that demonstrates good pytest practices: clear naming, descriptive assertions, and organized tests. Some code is provided; you need to complete the assertions.",
+        "starterCode": "# A function we're testing\ndef calculate_discount(purchase_amount, customer_type):\n    \"\"\"Calculate discount based on purchase amount and customer type\"\"\"\n    if customer_type == 'vip':\n        return purchase_amount * 0.20  # 20% discount for VIP\n    elif customer_type == 'regular':\n        return purchase_amount * 0.10  # 10% discount for regular\n    else:\n        return 0  # No discount for unknown types\n\n# Write tests using pytest conventions\n# Test 1: VIP customer gets 20% discount\ndef test_vip_customer_gets_twenty_percent_discount():\n    amount = 100\n    result = calculate_discount(amount, 'vip')\n    # TODO: Assert that result equals 20\n\n# Test 2: Regular customer gets 10% discount\ndef test_regular_customer_gets_ten_percent_discount():\n    amount = 100\n    result = calculate_discount(amount, 'regular')\n    # TODO: Assert that result equals 10\n\n# Test 3: Unknown customer type gets no discount\ndef test_unknown_customer_type_gets_no_discount():\n    amount = 100\n    result = calculate_discount(amount, 'unknown')\n    # TODO: Assert that result equals 0\n\nif __name__ == '__main__':\n    test_vip_customer_gets_twenty_percent_discount()\n    test_regular_customer_gets_ten_percent_discount()\n    test_unknown_customer_type_gets_no_discount()\n    print('All tests passed!')",
+        "solution": "def calculate_discount(purchase_amount, customer_type):\n    if customer_type == 'vip':\n        return purchase_amount * 0.20\n    elif customer_type == 'regular':\n        return purchase_amount * 0.10\n    else:\n        return 0\n\ndef test_vip_customer_gets_twenty_percent_discount():\n    amount = 100\n    result = calculate_discount(amount, 'vip')\n    assert result == 20, f'Expected 20 but got {result}'\n\ndef test_regular_customer_gets_ten_percent_discount():\n    amount = 100\n    result = calculate_discount(amount, 'regular')\n    assert result == 10, f'Expected 10 but got {result}'\n\ndef test_unknown_customer_type_gets_no_discount():\n    amount = 100\n    result = calculate_discount(amount, 'unknown')\n    assert result == 0, f'Expected 0 but got {result}'\n\nif __name__ == '__main__':\n    test_vip_customer_gets_twenty_percent_discount()\n    test_regular_customer_gets_ten_percent_discount()\n    test_unknown_customer_type_gets_no_discount()\n    print('All tests passed!')",
+        "hints": [
+          "Use assert with a comma to add a descriptive message: assert actual == expected, 'message'",
+          "Test names should describe what they test, not just 'test_1', 'test_2'",
+          "Each test should test ONE thing"
+        ],
+        "testCases": [
+          {
+            "name": "VIP discount calculation",
+            "assertion": "calculate_discount(100, 'vip') == 20"
+          },
+          {
+            "name": "Regular discount calculation",
+            "assertion": "calculate_discount(100, 'regular') == 10"
+          },
+          {
+            "name": "Unknown type no discount",
+            "assertion": "calculate_discount(100, 'unknown') == 0"
+          }
+        ]
+      },
+      {
+        "id": "py-pytest-ex2",
+        "type": "challenge",
+        "title": "Parameterized Tests",
+        "description": "Instead of writing 10 separate test functions for different inputs, pytest lets you write ONE test with multiple inputs (parameterization). This reduces code duplication. Write a parameterized test for the discount function that tests multiple amounts and customer types at once.",
+        "starterCode": "def calculate_discount(purchase_amount, customer_type):\n    if customer_type == 'vip':\n        return purchase_amount * 0.20\n    elif customer_type == 'regular':\n        return purchase_amount * 0.10\n    else:\n        return 0\n\n# Instead of this (bad):\n# def test_discount_100_vip():\n#     assert calculate_discount(100, 'vip') == 20\n# def test_discount_200_vip():\n#     assert calculate_discount(200, 'vip') == 40\n# def test_discount_500_vip():\n#     assert calculate_discount(500, 'vip') == 100\n\n# Write ONE parameterized test that covers all cases:\n# Use @pytest.mark.parametrize decorator\n# Parameters format: @pytest.mark.parametrize('arg1,arg2,arg3', [(val1, val2, val3), ...])\n\nimport pytest\n\n# TODO: Write parameterized test here\n# Test these cases:\n# - amount=100, type='vip', expected=20\n# - amount=200, type='vip', expected=40\n# - amount=100, type='regular', expected=10\n# - amount=200, type='regular', expected=20\n\nif __name__ == '__main__':\n    pytest.main([__file__, '-v'])",
+        "solution": "import pytest\n\ndef calculate_discount(purchase_amount, customer_type):\n    if customer_type == 'vip':\n        return purchase_amount * 0.20\n    elif customer_type == 'regular':\n        return purchase_amount * 0.10\n    else:\n        return 0\n\n@pytest.mark.parametrize('amount,customer_type,expected', [\n    (100, 'vip', 20),\n    (200, 'vip', 40),\n    (100, 'regular', 10),\n    (200, 'regular', 20),\n])\ndef test_calculate_discount(amount, customer_type, expected):\n    result = calculate_discount(amount, customer_type)\n    assert result == expected, f'Expected {expected} but got {result}'\n\nif __name__ == '__main__':\n    pytest.main([__file__, '-v'])",
+        "hints": [
+          "The @pytest.mark.parametrize decorator takes a string of parameter names and a list of tuples",
+          "Each tuple contains one set of test inputs",
+          "This one test function will run once for each tuple"
+        ],
+        "testCases": [
+          {
+            "name": "Parameterized tests all pass",
+            "assertion": "All 4 test cases passed"
+          }
+        ]
+      }
+    ],
+    "ctflQuiz": [
+      {
+        "id": "quiz1",
+        "question": "What is the benefit of using parameterized tests?",
+        "options": [
+          "They run faster than regular tests",
+          "They reduce code duplication by testing multiple inputs with one function",
+          "They automatically fix bugs in your code",
+          "They are required to pass CTFL certification"
+        ],
+        "correct": 1,
+        "explanation": "Parameterized tests let you write one test function that runs multiple times with different inputs. This reduces code duplication and makes tests easier to maintain. If you need to change the test logic, you change it in one place."
+      },
+      {
+        "id": "quiz2",
+        "question": "In pytest, how should you name a test file and test function?",
+        "options": [
+          "Any name is fine, pytest will find them",
+          "Files must be named test_*.py and functions must be named test_*",
+          "Files must be named *_test.py and functions must be named *_test",
+          "Only the file name matters, function names don't matter"
+        ],
+        "correct": 1,
+        "explanation": "Pytest uses naming conventions for automatic test discovery. Test files should be named test_*.py (or *_test.py) and test functions should start with test_. This allows pytest to automatically find and run your tests."
+      }
+    ]
+  }

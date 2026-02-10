@@ -1,7 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import { LessonView } from './components/LessonView/LessonView';
 import './App.css';
+
+function LessonViewWrapper() {
+  const { id } = useParams();
+  return <LessonView lessonId={id || 'intro'} />;
+}
 
 function App() {
   return (
@@ -13,7 +18,7 @@ function App() {
         </header>
         <main>
           <Routes>
-            <Route path="/lesson/:id" element={<LessonView lessonId="intro" />} />
+            <Route path="/lesson/:id" element={<LessonViewWrapper />} />
             <Route path="/" element={<Dashboard />} />
           </Routes>
         </main>
